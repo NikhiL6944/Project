@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        /* Add CSS for styling, positioning, and the modal popup */
+        body {
+          
+            background-color:#7FFFD4;
+            font-family: Verdana;
+            text-align: center;
+        }
+        .container {
+            width: 40%;
+            margin: 0 auto;
+        }
+        
+        label {
+           
+            display: block;
+            margin-block: 10px;
+        }
+        select, input[type="text"], input[type="email"], input[type="number"],input[type="date"] {
+            width: 80%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            
+        }
+        .gender-label {
+            margin-right: 10px;
+        }
+        h1{
+            font-family: Verdana;
+            text-align: center;
+        }
+        .form-control {
+            text-align: left;
+            margin-bottom: 25px;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            padding-top: 100px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 50%;
+            text-align: left;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        button {
+			background-color:rgb(89, 89, 238);
+			border: 1px solid #777;
+			border-radius: 2px;
+			font-size: 21px;
+			margin-left: auto;
+			width: 30%;
+			
+		}
+        form {
+            background-color: #fff;
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 30px 20px;
+            box-shadow: 2px 5px 10px rgba(0, 0, 0, 0.5);
+        }
+       
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1> Customer Survey Form</h1>
+        <form id="form">
+        <form id="surveyForm">
+            <div class="form-control">
+                
+                <label for="firstName">First Name:</label>
+                <input type="text" id="firstName" required>
+            </div>
+            <div class="form-control">
+                <label for="lastName">Last Name:</label>
+                <input type="text" id="lastName" required>
+            </div>
+            <div class="form-control">
+                <label for="dob">Date of Birth:</label>
+                <input type="date" id="dob" required>
+            </div>
+            <div class="form-control">
+                <label for="country">Country:</label>
+                <select id="country" required>
+                    <option value="" disabled selected>Select your country</option>
+                    <option value="INDIA">India</option>
+                    <option value="USA">United States</option>
+                    <option value="Canada">Canada</option>
+                    <option value="UK">United Kingdom</option>
+                   
+                </select>
+            </div>
+            <div class="form-control">
+                <label>Gender:</label>
+                <label class="gender-label"><input type="radio" name="gender" value="male"> Male</label>
+                <label class="gender-label"><input type="radio"   name="gender" value="female" > Female</label>
+                <label class="gender-label"><input type="radio"  name="gender" value="other" > Other</label>
+            </div>
+            <div class="form-control">
+               
+                <label for="profession">Profession:</label>
+                <input type="text" id="profession" required>
+            </div>
+            <div class="form-control">
+                <label for="email">Email:</label>
+                <input type="email" id="email" required>
+            </div>
+            
+            <div class="form-control">
+                <label for="mobile">Mobile Number:</label>
+                <input type="number" id="mobile" ></input>
+            </div>
+            <div class="form-control">
+                <!-- <button type="button" id="submitBtn" onclick="submitForm()">Submit</button> -->
+                <button type="button" id="submitBtn" onclick="validateForm()">Submit</button>
+
+                <button type="button" id="resetBtn" onclick="resetForm()">Reset</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Modal Popup -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Survey Form Submission</h2>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+    <div id="errorMessage" style="color: red;"></div>
+
+    <script>
+        function submitForm() {
+            // Get form values
+            const firstName = document.getElementById("firstName").value;
+            const lastName = document.getElementById("lastName").value;
+            const dob = document.getElementById("dob").value;
+            const country = document.getElementById("country").value;
+            const genderCheckboxes = document.querySelectorAll('input[name="gender"]:checked');
+            const profession = document.getElementById("profession").value;
+            const email = document.getElementById("email").value;
+            const mobile = document.getElementById("mobile").value;
+
+            // Check if gender checkboxes are selected
+            let genderValues = [];
+            genderCheckboxes.forEach(checkbox => genderValues.push(checkbox.value));
+
+            // Display the values in the modal popup
+            const modalContent = document.getElementById("modalContent");
+            modalContent.innerHTML = `
+                <p><strong>First Name:</strong> ${firstName}</p>
+                <p><strong>Last Name:</strong> ${lastName}</p>
+                <p><strong>Date of Birth:</strong> ${dob}</p>
+                <p><strong>Country:</strong> ${country}</p>
+                <p><strong>Gender:</strong> ${genderValues.join(", ")}</p>
+                <p><strong>Profession:</strong> ${profession}</p>
+                <p><strong>Email:</strong> ${email}</p>
+                <p><strong>Mobile Number:</strong> ${mobile}</p>
+            `;
+
+            // Display the modal popup
+            const modal = document.getElementById("myModal");
+            modal.style.display = "block";
+
+            // Reset the form
+            resetForm();
+        }
+
+        function resetForm() {
+            document.getElementById("surveyForm").reset();
+        }
+
+        function closeModal() {
+            const modal = document.getElementById("myModal");
+            modal.style.display = "none";
+        }
+
+        // Close the modal if the user clicks outside of it
+        window.onclick = function(event) {
+            const modal = document.getElementById("myModal");
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+        function validateForm() {
+    // Get form values
+    const firstName = document.getElementById("firstName").value;
+    const lastName = document.getElementById("lastName").value;
+    const dob = document.getElementById("dob").value;
+    const country = document.getElementById("country").value;
+    const genderCheckboxes = document.querySelectorAll('input[name="gender"]:checked');
+    const profession = document.getElementById("profession").value;
+    const email = document.getElementById("email").value;
+    const mobile = document.getElementById("mobile").value;
+
+    // Check if any of the required fields are empty
+    if (!firstName || !lastName || !dob || country === "" || genderCheckboxes.length === 0 || !profession || !email || !mobile) {
+        // Display an error message
+        const errorMessage = document.getElementById("errorMessage");
+        errorMessage.textContent = "Please fill all of the above fields.";
+    } else {
+        // All required fields are filled, proceed with form submission
+        const errorMessage = document.getElementById("errorMessage");
+        errorMessage.textContent = ""; 
+
+        submitForm();
+    }
+}
+
+    </script>
+    
+</body>
+</html>
