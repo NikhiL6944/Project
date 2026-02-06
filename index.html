@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Love Test 😄</title>
+
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    background: #ffe6ea;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+  }
+
+  .card {
+    background: #ffeef2;
+    width: 90%;
+    max-width: 360px;
+    padding: 30px;
+    text-align: center;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    position: relative;
+    z-index: 2;
+  }
+
+  h2 { margin-bottom: 10px; }
+  p { font-size: 14px; opacity: 0.8; }
+
+  .gif {
+    width: 130px;
+    margin: 15px auto;
+    border-radius: 12px;
+  }
+
+  .buttons {
+    margin-top: 25px;
+    position: relative;
+    height: 60px;
+  }
+
+  button {
+    padding: 10px 24px;
+    font-size: 16px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+
+  #yesBtn {
+    background: #ff5a7a;
+    color: #fff;
+  }
+
+  #noBtn {
+    background: #fff;
+    position: absolute;
+    margin-left: 15px;
+    touch-action: none; /* 🔥 critical for mobile */
+  }
+
+  .shareBtn {
+    margin-top: 20px;
+    background: #ffb3c6;
+  }
+
+  /* Floating hearts & balloons */
+  .float {
+    position: absolute;
+    animation: floatUp 8s linear infinite;
+    opacity: 0.7;
+    font-size: 18px;
+  }
+
+  @keyframes floatUp {
+    from { transform: translateY(100vh); opacity: 0; }
+    to { transform: translateY(-120vh); opacity: 1; }
+  }
+</style>
+</head>
+
+<body>
+
+<!-- floating decorations -->
+<div class="float" style="left:5%; animation-delay:0s;">❤️</div>
+<div class="float" style="left:15%; animation-delay:2s;">🎈</div>
+<div class="float" style="right:10%; animation-delay:1s;">💖</div>
+<div class="float" style="right:20%; animation-delay:3s;">🎈</div>
+
+<!-- 🎵 Background music -->
+<audio id="bgMusic" loop>
+  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_8c1f84c6a7.mp3?filename=love-romantic-112191.mp3" type="audio/mpeg">
+</audio>
+
+<div class="card">
+  <img id="gif" class="gif"
+    src="https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif">
+
+  <h2 id="title">Will you be my Valentine? 🥺</h2>
+  <p id="subtitle">~ Nikhil is all yours</p>
+
+  <div class="buttons">
+    <button id="yesBtn">Yes</button>
+    <button id="noBtn">No</button>
+  </div>
+
+  <button class="shareBtn" onclick="shareLove()">💌 Share this</button>
+</div>
+
+<script>
+  const music = document.getElementById("bgMusic");
+  const title = document.getElementById("title");
+  const sub = document.getElementById("subtitle");
+  const gif = document.getElementById("gif");
+  const noBtn = document.getElementById("noBtn");
+  const yesBtn = document.getElementById("yesBtn");
+
+  function playMusic() {
+    music.volume = 0.5;
+    music.play().catch(() => {});
+  }
+
+  yesBtn.addEventListener("click", playMusic);
+  noBtn.addEventListener("click", playMusic);
+  noBtn.addEventListener("touchstart", playMusic, { passive: false });
+
+  let step = 0;
+
+  const screens = [
+    {
+      title: "Will you be my Valentine? 🥺",
+      sub: "~ Nikhil is all yours",
+      gif: "https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif"
+    },
+    {
+      title: "Please think again! 🙄",
+      sub: "Itni jaldi nahi matt bolo 🥲",
+      gif: "https://media.giphy.com/media/mlvseq9yvZhba/giphy.gif"
+    },
+    {
+      title: "Baby man jao na! Kitna bhav khaogi 😭",
+      sub: "bhut glt baat hai yaar",
+      gif: "https://media.giphy.com/media/MDJ9IbxxvDUQM/giphy.gif"
+    },
+    {
+      title: "Last chance 😤",
+      sub: "ab toh haan bol do",
+      gif: "https://media.giphy.com/media/3oriO0OEd9QIDdllqo/giphy.gif"
+    }
+  ];
+
+  noBtn.addEventListener("click", () => {
+    if (step < screens.length - 1) {
+      step++;
+      title.innerText = screens[step].title;
+      sub.innerText = screens[step].sub;
+      gif.src = screens[step].gif;
+    }
+  });
+
+  function moveNoButton(e) {
+    if (step >= 3) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      const maxX = window.innerWidth - noBtn.offsetWidth - 20;
+      const maxY = window.innerHeight - noBtn.offsetHeight - 20;
+
+      noBtn.style.left = Math.random() * maxX + "px";
+      noBtn.style.top = Math.random() * maxY + "px";
+    }
+  }
+
+  noBtn.addEventListener("mouseover", moveNoButton);
+  noBtn.addEventListener("touchstart", moveNoButton, { passive: false });
+
+  yesBtn.addEventListener("click", () => {
+    title.innerText = "Hehehehe, I knew it Dukkar 🐷😘";
+    sub.innerText = "Love you a lot ❤️";
+    gif.src = "https://media.giphy.com/media/l4KibK3JwaVo0CjDO/giphy.gif";
+    document.querySelector(".buttons").style.display = "none";
+  });
+
+  function shareLove() {
+    const text = "Someone made this cute Valentine website for you 😍💖";
+    const url = window.location.href;
+
+    if (navigator.share) {
+      navigator.share({ title: "Love Test 💕", text, url });
+    } else {
+      navigator.clipboard.writeText(url);
+      alert("Link copied! 💌");
+    }
+  }
+</script>
+
+</body>
+</html>
